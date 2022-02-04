@@ -9,10 +9,10 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-/** 
- Skeleton of a ContinuousIntegrationServer which acts as webhook
- See the Jetty documentation for API documentation of those classes.
-*/
+/**
+ * Server that receives HTTP requests from GitHub in order
+ * to run the CI steps on a particular version.
+ */
 public class ContinuousIntegrationServer
 {
     public static void handle(HttpExchange exchange)
