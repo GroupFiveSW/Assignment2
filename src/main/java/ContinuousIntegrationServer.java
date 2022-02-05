@@ -38,7 +38,8 @@ public class ContinuousIntegrationServer
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
     {
-        int port = 8080;
+
+        int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8081"));
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         HttpContext root = server.createContext("/");
         System.out.println("Listening on port: " + port);
