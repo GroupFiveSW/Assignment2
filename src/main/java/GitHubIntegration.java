@@ -10,8 +10,8 @@ import java.util.HexFormat;
  */
 public class GitHubIntegration {
 
-    private final String HMAC_SHA256 = "HmacSHA256";
-    private final String WEBHOOK_SIGNATURE_PREFIX = "sha256=";
+    private static final String HMAC_SHA256 = "HmacSHA256";
+    private static final String WEBHOOK_SIGNATURE_PREFIX = "sha256=";
 
     /**
      * Validates a webhook request
