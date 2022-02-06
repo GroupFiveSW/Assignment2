@@ -1,5 +1,3 @@
-import com.sun.net.httpserver.Headers;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
