@@ -28,6 +28,7 @@ public class GitHubIntegration {
     public boolean validateWebhook(String body, String signatureHeader, String secret)
             throws NoSuchAlgorithmException, InvalidKeyException, IllegalArgumentException
     {
+        // Check that the signature formatting and encoding is valid
         if (!signatureHeader.startsWith(WEBHOOK_SIGNATURE_PREFIX)) {
             throw new IllegalArgumentException("The signature does not start with \""+WEBHOOK_SIGNATURE_PREFIX+"\"");
         }
@@ -39,13 +40,13 @@ public class GitHubIntegration {
             throw new IllegalArgumentException("The signature header is not hexadecimal", ex);
         }
 
+        // Initialize Mac object
         Mac mac;
         try {
             mac = Mac.getInstance(HMAC_SHA256);
         } catch (NoSuchAlgorithmException ex){
             throw new NoSuchAlgorithmException("Could not validate webhook, the hardcoded algorithm is invalid", ex);
         }
-
         var secretKey = new SecretKeySpec(secret.getBytes(), HMAC_SHA256);
         try {
             mac.init(secretKey);
@@ -53,8 +54,8 @@ public class GitHubIntegration {
             throw new InvalidKeyException("Could not validate webhook, Mac object could not accept secret key", ex);
         }
 
+        // Generate and compare HMAC
         var expected = mac.doFinal(body.getBytes());
-
         return Arrays.equals(expected, signature);
     }
 }
