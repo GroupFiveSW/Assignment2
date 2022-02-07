@@ -41,12 +41,18 @@ public class ContinuousIntegrationServer
 
         JSONObject jsonObj = new JSONObject(jsonString);
 
+        System.out.println("Getting runtime..");
         Runtime run = Runtime.getRuntime();
+
+        System.out.println(jsonObj);
+        System.out.println("JSON Object retrieved successfully.");
 
         run.exec("rm -rf repo");
         run.exec("mkdir repo/");
         run.exec("git clone -b main https://github.com/GroupFiveSW/TestRepo.git repo/");
         run.exec("ls");
+
+        System.out.println("Git repository cloned successfully into directory repo/.");
 
 
         String responseText = "CI job done";
