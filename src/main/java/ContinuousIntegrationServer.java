@@ -27,6 +27,8 @@ public class ContinuousIntegrationServer
         headers.set("ContentType", "text/html;charset=utf-8");
 
 
+
+
         System.out.println(exchange.getRequestURI());
 
         // here you do all the continuous integration tasks
@@ -39,20 +41,31 @@ public class ContinuousIntegrationServer
 
         var jsonString = new String(payload);
 
+//        System.out.print(jsonString);
+
+//        System.out.print("hej");
+
         JSONObject jsonObj = new JSONObject(jsonString);
 
-        System.out.println("Getting runtime..");
+        System.out.print("test print: " + jsonObj.toString());
+
+        System.out.print(jsonObj.getJSONObject("repository").getString("clone_url") );
+//        System.out.print(jsonObj.getString("ref"));
         Runtime run = Runtime.getRuntime();
 
-        System.out.println(jsonObj);
-        System.out.println("JSON Object retrieved successfully.");
-
-        run.exec("rm -rf repo");
+        run.exec("rm -rf");
         run.exec("mkdir repo/");
         run.exec("git clone -b main https://github.com/GroupFiveSW/TestRepo.git repo/");
         run.exec("ls");
 
-        System.out.println("Git repository cloned successfully into directory repo/.");
+
+//        String jsonStringg = jsonObj.getString();
+
+//        System.out.print("printing the jsonstring:  " + jsonString);
+
+
+
+
 
 
         String responseText = "CI job done";
@@ -85,7 +98,23 @@ public class ContinuousIntegrationServer
     }
 
 
+    public void codeFetch(URL url){
+//        InputStream is = url.openStream();
 
+        try{
+//            System.out.print("hej");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String input;
+            while((input = reader.readLine()) != null){
+//                System.out.print("hej");
+                System.out.print(input);
+            }
+            reader.close();
+        }catch(Exception e){
+
+        }
+        return;
+    }
 
 
 
@@ -103,7 +132,21 @@ public class ContinuousIntegrationServer
         root.setHandler(ContinuousIntegrationServer::handle);
 
         node1.setHandler(ContinuousIntegrationServer::handle2);
-        
+
+//        URL herokuURL = new URL("https://kolkrabbi.heroku.com/hooks/github");
+//        URL herokuURL = new URL("https://api.github.com/users/GroupFiveSW");
+//        URL repoURL = new URL("https://api.github.com/users/GroupFiveSW/events");
+//        URL repoURL = new URL("https://api.github.com/repos/Carnoustie/practiceProject/events");
+
+
+//        HttpURLConnection con = (HttpURLConnection) new URL("https://api.github.com/users/GroupFiveSW").openConnection();
+
+//        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+
+
+//        cis.codeFetch(repoURL);
+
         server.start();
     }
 }
