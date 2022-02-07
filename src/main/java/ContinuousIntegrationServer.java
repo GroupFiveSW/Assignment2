@@ -34,27 +34,19 @@ public class ContinuousIntegrationServer
         // 1st clone your repository
         // 2nd compile the code
 
-//        String payload = exchange.getResponseBody().readAllBytes();
 
         var payload = exchange.getRequestBody().readAllBytes();
 
         var jsonString = new String(payload);
 
-//        JSONObject jsonObj = new JSONObject(jsonString);
-//
-//        System.out.print("test print: " + jsonObj.toString());
+        JSONObject jsonObj = new JSONObject(jsonString);
 
-//        Runtime commander = new Runtime();
+        Runtime run = Runtime.getRuntime();
 
-
-
-//        String jsonStringg = jsonObj.getString();
-
-//        System.out.print("printing the jsonstring:  " + jsonStringg);
-
-
-
-
+        run.exec("rm -rf repo");
+        run.exec("mkdir repo/");
+        run.exec("git clone -b main https://github.com/GroupFiveSW/TestRepo.git repo/");
+        run.exec("ls");
 
 
         String responseText = "CI job done";
@@ -87,23 +79,7 @@ public class ContinuousIntegrationServer
     }
 
 
-    public void codeFetch(URL url){
-//        InputStream is = url.openStream();
 
-        try{
-//            System.out.print("hej");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            String input;
-            while((input = reader.readLine()) != null){
-//                System.out.print("hej");
-                System.out.print(input);
-            }
-            reader.close();
-        }catch(Exception e){
-
-        }
-        return;
-    }
 
 
 
@@ -121,21 +97,7 @@ public class ContinuousIntegrationServer
         root.setHandler(ContinuousIntegrationServer::handle);
 
         node1.setHandler(ContinuousIntegrationServer::handle2);
-
-//        URL herokuURL = new URL("https://kolkrabbi.heroku.com/hooks/github");
-//        URL herokuURL = new URL("https://api.github.com/users/GroupFiveSW");
-//        URL repoURL = new URL("https://api.github.com/users/GroupFiveSW/events");
-//        URL repoURL = new URL("https://api.github.com/repos/Carnoustie/practiceProject/events");
-
-
-//        HttpURLConnection con = (HttpURLConnection) new URL("https://api.github.com/users/GroupFiveSW").openConnection();
-
-//        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-
-
-//        cis.codeFetch(repoURL);
-
+        
         server.start();
     }
 }
