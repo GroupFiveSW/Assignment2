@@ -59,7 +59,9 @@ public class ContinuousIntegrationServer
             headers.set("ContentType", "application/json");
 
 
+
             System.out.println(exchange.getRequestURI());
+
 
             // here you do all the continuous integration tasks
             // for example
@@ -72,6 +74,7 @@ public class ContinuousIntegrationServer
             var jsonString = new String(payload);
             JSONObject json = toJson(jsonString);
             System.out.println("JSON Object retrieved successfully.");
+
 
             System.out.println("Getting runtime..");
             Runtime run = Runtime.getRuntime();
@@ -126,7 +129,23 @@ public class ContinuousIntegrationServer
     }
 
 
+    public void codeFetch(URL url){
+//        InputStream is = url.openStream();
 
+        try{
+//            System.out.print("hej");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String input;
+            while((input = reader.readLine()) != null){
+//                System.out.print("hej");
+                System.out.print(input);
+            }
+            reader.close();
+        }catch(Exception e){
+
+        }
+        return;
+    }
 
 
 
@@ -144,7 +163,21 @@ public class ContinuousIntegrationServer
         root.setHandler(ContinuousIntegrationServer::handle);
 
         node1.setHandler(ContinuousIntegrationServer::handle2);
-        
+
+//        URL herokuURL = new URL("https://kolkrabbi.heroku.com/hooks/github");
+//        URL herokuURL = new URL("https://api.github.com/users/GroupFiveSW");
+//        URL repoURL = new URL("https://api.github.com/users/GroupFiveSW/events");
+//        URL repoURL = new URL("https://api.github.com/repos/Carnoustie/practiceProject/events");
+
+
+//        HttpURLConnection con = (HttpURLConnection) new URL("https://api.github.com/users/GroupFiveSW").openConnection();
+
+//        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+
+
+//        cis.codeFetch(repoURL);
+
         server.start();
     }
 }
