@@ -13,7 +13,7 @@ public class MavenIntegration {
 
     /**
      * Creates a new maven instance linked to a pom.xml
-     * @param pomFile
+     * @param pomFile pom.xml file of the maven project
      */
     public MavenIntegration(String pomFile) {
         this(pomFile, getDefaultJavahome());
