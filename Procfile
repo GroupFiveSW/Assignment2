@@ -1,1 +1,1 @@
-web: java -jar target/Assignment2-1.0-SNAPSHOT.jar -Dserver.port=$PORT
+web: java -jar target/Assignment2-1.0-SNAPSHOT-jar-with-dependencies.jar -Dserver.port=$PORT

@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +10,7 @@ class MavenIntegrationTest {
      */
     @Test
     void testTestTrue() {
+
         var mvn = new MavenIntegration("src/test/testprojects/valid/pom.xml");
         var result = assertDoesNotThrow(()->mvn.test(), "Test should not throw error");
         assertTrue(result.isSuccessful(), "Test should be successful");
