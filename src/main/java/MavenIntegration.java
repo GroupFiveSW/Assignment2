@@ -10,23 +10,16 @@ public class MavenIntegration {
 
     private String pomFile;
     private String javaHome;
+    private String mavenHome;
 
     /**
      * Creates a new maven instance linked to a pom.xml
      * @param pomFile pom.xml file of the maven project
      */
-    public MavenIntegration(String pomFile) {
-        this(pomFile, getDefaultJavahome());
-    }
-
-    /**
-     * Creates a new maven instance linked to a pom.xml
-     * @param pomFile pom.xml file of the maven project
-     * @param javaHome An installation directory of a JDK
-     */
-    public MavenIntegration(String pomFile, String javaHome){
+    public MavenIntegration(String pomFile){
         this.pomFile = pomFile;
-        this.javaHome = javaHome;
+        this.javaHome = getDefaultJavahome();
+        this.mavenHome = getDefaultMavenhome();
     }
 
     private static String getDefaultJavahome() {
@@ -38,6 +31,46 @@ public class MavenIntegration {
             javaHome = System.getenv("JAVA_HOME");
         }
         return javaHome;
+    }
+
+    private static String getDefaultMavenhome() {
+        String mavenHome = System.getProperty("maven.home");
+        if (mavenHome == null || mavenHome.equals("")) {
+            mavenHome = System.getenv("MAVENINTGR_MAVENHOME");
+        }
+        return mavenHome;
+    }
+
+    /**
+     * Gets the java home directory to use
+     * @return a JDK directory
+     */
+    public String getJavaHome(){
+        return javaHome;
+    }
+
+    /**
+     * Sets the java home directory to use
+     * @param javaHome a JDK directory
+     */
+    public void setJavaHome(String javaHome){
+        this.javaHome = javaHome;
+    }
+
+    /**
+     * Gets the java home directory to use
+     * @return a maven home directory
+     */
+    public String getMavenHome(){
+        return mavenHome;
+    }
+
+    /**
+     * Gets the java home directory to use
+     * @param mavenHome a maven home directory
+     */
+    public void setMavenHome(String mavenHome){
+        this.mavenHome = mavenHome;
     }
 
     /**
