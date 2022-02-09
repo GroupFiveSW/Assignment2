@@ -1,6 +1,8 @@
 FROM maven:3.8.4-openjdk-17
 VOLUME /tmp
-COPY target/Assignment2-1.0-SNAPSHOT-jar-with-dependencies.jar Assignment2.jar
+COPY . /app
+WORKDIR /app
+RUN mvn install
 ENV MAVENINTGR_MAVENHOME=/usr/share/maven
-CMD ["java","-jar","Assignment2.jar"]
+CMD ["java","-jar","target/Assignment2-1.0-SNAPSHOT-jar-with-dependencies.jar"]
 EXPOSE 8081
