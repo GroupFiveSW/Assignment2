@@ -19,7 +19,7 @@ public class AssessmentProgram
 
         System.out.println("Program started");
 
-        int mulRes = multiplyNum(5,4)
+        int mulRes = multiplyNum(5,4);
         System.out.println("Result: " + a + " * " + b + " = " + mulRes);
 
         int addRes = addNum(5,4);
