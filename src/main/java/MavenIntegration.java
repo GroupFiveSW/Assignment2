@@ -90,6 +90,7 @@ public class MavenIntegration {
         var outputHandler = new StringBuilderOutputHandler();
 
         var invoker = new DefaultInvoker();
+        invoker.setMavenHome(new File(mavenHome));
         invoker.setOutputHandler(outputHandler);
         invoker.setErrorHandler(outputHandler);
         var result = invoker.execute(request);
