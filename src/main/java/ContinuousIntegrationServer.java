@@ -63,20 +63,12 @@ public class ContinuousIntegrationServer
             System.out.println(exchange.getRequestURI());
 
 
-            // here you do all the continuous integration tasks
-            // for example
-            // 1st clone your repository
-            // 2nd compile the code
-
-
             var payload = exchange.getRequestBody().readAllBytes();
 
             var jsonString = new String(payload);
             JSONObject json = toJson(jsonString);
-            System.out.println("JSON Object retrieved successfully.");
 
 
-            System.out.println("Getting runtime..");
             Runtime run = Runtime.getRuntime();
 
             Process process = run.exec("mkdir repo/");
@@ -84,18 +76,39 @@ public class ContinuousIntegrationServer
 
             System.out.println("Created temporary repo");
 
-            process =  run.exec("git clone -b main https://github.com/GroupFiveSW/TestRepo.git repo/");
+            String branch = json.getString("ref").split("/")[2];
+            String cloneUrl = json.getJSONObject("repository").getString("clone_url");
+
+            System.out.println("Cloning repo...");
+            process =  run.exec("git clone -b " +  branch + " " + cloneUrl +  " repo/");
             process.waitFor();
 
-            System.out.println("Cloned repo into temporary folder");
+            System.out.println("Cloned repo from " + cloneUrl + " using branch " + branch);
 
 
-            String responseText = "CI job done";
+            MavenIntegration mvn = new MavenIntegration("repo/pom.xml");
+            System.out.println("Running tests...");
+            var result = mvn.test();
+
+            String recipientEmail = json.getJSONObject("head_commit").getJSONObject("committer").getString("email");
+            MailHandler mail = new MailHandler(new SMTPSettings("smtp.gmail.com","587", recipientEmail));
+            mail.mail(result);
+            System.out.println("Sent email to " + recipientEmail);
+
+
+
+            System.out.println("Successfully ran job");
+            System.out.println(result.getLog());
+
+
+            String responseText = result.isSuccessful() ? "Project was successfully compiled and tested" : "Project failed to compile";
+            responseText += "\n" + result.getLog();
             exchange.sendResponseHeaders(200, responseText.length());
             OutputStream output = exchange.getResponseBody();
             output.write(responseText.getBytes(StandardCharsets.UTF_8));
             output.close();
         } catch (Exception e){
+            e.printStackTrace();
             System.out.println("Process failed");
             String responseText = "CI job failed";
             exchange.sendResponseHeaders(500, responseText.length());
