@@ -42,7 +42,8 @@ We've also implemented a seperate CI-workflow for our CI-server code to also tak
 - Task
 
 ### Elias Bonnici
-- Task
+- Integrated build/compilation into CI pipeline (#13)
+- Created database and functions to store and fetch buildHistory (#16) 
 
 ### Gustaf Halvardsson
 - Add a thorough README to repository (#23)
