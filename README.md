@@ -52,7 +52,14 @@ We've also implemented a seperate CI-workflow for our CI-server code to also tak
 - Add Template Code (#1)
 
 ### Alexander Krantz
-- Task
+
+- Fixing runtime environment on Heroku server (#32) with Gustaf
+- Add ability to customize maven home directory (#31)
+- MavenIntegration test method not working (#27)
+- P5: Generate code documentation (#24)
+- Implement webhook validation check (#19)
+- Implement a code testing function (#12)
+- Initialize maven pom (#9)
 
 ### Oscar Spolander
 - Task
@@ -61,3 +68,5 @@ We've also implemented a seperate CI-workflow for our CI-server code to also tak
 ## How to run the code
 
 Since we are using docker you need to build the image first using `docker build -t assessment2 . ` when in the root folder of the project. Once it has finsihed building run the container using `docker run -p 8081:8081 -t assessment2`. Then the server will run the server.
+
+You can use `mvn javadoc:javadoc` in order to generate the source documentation.
