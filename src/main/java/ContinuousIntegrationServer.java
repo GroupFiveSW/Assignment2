@@ -95,6 +95,11 @@ public class ContinuousIntegrationServer
             mail.mail(result);
             System.out.println("Sent email to " + recipientEmail);
 
+            String commitId = json.getJSONObject("head_commit").getString("id");
+            BuildHistory build = new BuildHistory();
+            build.addBuild(result, commitId);
+
+
 
 
             System.out.println("Successfully ran job");
@@ -141,24 +146,85 @@ public class ContinuousIntegrationServer
         output.close();
     }
 
+    /**
+     * Fetches all builds from database and returns html template containing build url:s
+     * @param exchange
+     * @throws IOException
+     */
+    public static void buildHistory(HttpExchange exchange)
+            throws IOException
+    {
+        Headers headers = exchange.getResponseHeaders();
+        headers.set("ContentType", "text/html;charset=utf-8");
 
-    public void codeFetch(URL url){
-//        InputStream is = url.openStream();
+        BuildHistory buildHistory = new BuildHistory();
+        String response = "<html><body style=\"background:#FAFAFA;\"><h2>Build History: </h2><ul>";
 
-        try{
-//            System.out.print("hej");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            String input;
-            while((input = reader.readLine()) != null){
-//                System.out.print("hej");
-                System.out.print(input);
-            }
-            reader.close();
-        }catch(Exception e){
+        ArrayList<BuildHistoryResult> builds = buildHistory.getAllBuilds();
 
+        String url = "/build";
+
+        for (BuildHistoryResult build: builds) {
+            response += "<li>" +
+                            "<a href=\"" + url + "/" + build.getId() + "\">" + "build-" + build.getId() + "</a>" +
+                        "</li>";
         }
-        return;
+
+        response += "</ul></body></html>";
+        exchange.sendResponseHeaders(200, response.length());
+        OutputStream output = exchange.getResponseBody();
+        output.write(response.getBytes(StandardCharsets.UTF_8));
+        output.close();
     }
+
+    /**
+     * Fetches information for single build and returns html template containing
+     * build date, commit id & build log.
+     * @param exchange
+     * @throws IOException
+     */
+    public static void getSingleBuild(HttpExchange exchange)
+            throws IOException
+    {
+        Headers headers = exchange.getResponseHeaders();
+        headers.set("ContentType", "text/html;charset=utf-8");
+
+        String req = String.valueOf(exchange.getRequestURI());
+        String[] reqArr = req.split("/");
+
+        String response = "<html><body style=\"background:#FAFAFA;\">";
+        if (reqArr.length > 2){
+            try {
+                int buildID = Integer.parseInt(reqArr[2]);
+                BuildHistory buildHistory = new BuildHistory();
+                BuildHistoryResult build = buildHistory.getBuildById(buildID);
+                if (build == null){
+                    response = "<html><body>Build not found!</body></html>";
+                } else {
+                    response += "<div>" +
+                                    "<div style=\"display:flex;\">" +
+                                    "<h2 style=\"font-size:18px;\">" + "CommitID: " + build.getCommit() + "</h2>"+
+                                    "<h2 style=\"margin-left:20px;font-size:18px;\">" + "Build Date: " + build.getDate() + "</h2>"+
+                                    "</div>"+
+                                    "<p>" + build.getLog().replaceAll("(\r\n|\n)", "<br>") + "</p>" +
+                                "</div>";
+                    response += "</body></html>";
+                }
+            } catch (NumberFormatException e) {
+                response = "<html><body>Invalid URL</body></html>";
+            }
+        } else {
+            response = "<html><body>Invalid URL</body></html>";
+        }
+        exchange.sendResponseHeaders(200, response.length());
+        OutputStream output = exchange.getResponseBody();
+        output.write(response.getBytes(StandardCharsets.UTF_8));
+        output.close();
+    }
+
+
+
+
 
 
 
@@ -166,30 +232,21 @@ public class ContinuousIntegrationServer
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
     {
-        ContinuousIntegrationServer cis = new ContinuousIntegrationServer();
         int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8081"));
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         HttpContext root = server.createContext("/ci");
         HttpContext node1 = server.createContext("/");
+        HttpContext buildHistory = server.createContext("/buildHistory");
+        HttpContext singleBuildHistory = server.createContext("/build");
 
         System.out.println("Listening on port: " + port);
         root.setHandler(ContinuousIntegrationServer::handle);
 
         node1.setHandler(ContinuousIntegrationServer::handle2);
 
-//        URL herokuURL = new URL("https://kolkrabbi.heroku.com/hooks/github");
-//        URL herokuURL = new URL("https://api.github.com/users/GroupFiveSW");
-//        URL repoURL = new URL("https://api.github.com/users/GroupFiveSW/events");
-//        URL repoURL = new URL("https://api.github.com/repos/Carnoustie/practiceProject/events");
+        buildHistory.setHandler(ContinuousIntegrationServer::buildHistory);
+        singleBuildHistory.setHandler(ContinuousIntegrationServer::getSingleBuild);
 
-
-//        HttpURLConnection con = (HttpURLConnection) new URL("https://api.github.com/users/GroupFiveSW").openConnection();
-
-//        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-
-
-//        cis.codeFetch(repoURL);
 
         server.start();
     }
