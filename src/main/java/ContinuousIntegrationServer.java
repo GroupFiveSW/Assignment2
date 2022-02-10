@@ -162,9 +162,7 @@ public class ContinuousIntegrationServer
 
         ArrayList<BuildHistoryResult> builds = buildHistory.getAllBuilds();
 
-        String url = "https://ci-servergroup5.herokuapp.com/build";
-        // Uncomment below line if you are running the CI-server locally
-        //String url = "http://localhost:8081/build";
+        String url = "/build";
 
         for (BuildHistoryResult build: builds) {
             response += "<li>" +
