@@ -6,7 +6,7 @@ In this assignment we were tasked to write a CI-server that automatically builds
 
 ### Program
 
-The CI-server is deployed on Heroku (https://ci-servergroup5.herokuapp.com/) where the main codebase is located. The main-routine runs on the `/ci` endpoint. A github webhook on this repository is connected to the heroku endpoint `/ci` so when a commit is made here, a payload is sent to the Heroku-server. The server, which runs in a Docker container, takes the payload information and uses the `branch` name and `clone_url` from the payload to clone the latest version of repository on that branch to the server machine. Then it compiles, builds and tests it using maven. The build and test logs are gathered and sent to the email address thats associated with the commit. The compilation/test method was tested by trying to running it on smaller maven projects. The notification method was tested by sending emails to a locally hosted smtp server and asserting that the correct information was received.
+The CI-server is deployed on Heroku (https://ci-servergroup5.herokuapp.com/) where the main codebase is located. The main-routine runs on the `/ci` endpoint. A github webhook on this repository is connected to the heroku endpoint `/ci` so when a commit is made here, a payload is sent to the Heroku-server. The server, which runs in a Docker container, takes the payload information and uses the `branch` name and `clone_url` from the payload to clone the latest version of repository on that branch to the server machine. Then it compiles, builds and tests it using maven. The build and test logs are gathered and sent to the email address thats associated with the commit. The compilation/test method is unit tested by running it on smaller maven projects. The notification method is tested by sending emails to a locally hosted smtp server and asserting that the correct information was received.
 
 We've also implemented a seperate CI-workflow for our CI-server code to also take advantage of automatic deployment once a commit is made to the main branch.
 
@@ -62,8 +62,8 @@ We've also implemented a seperate CI-workflow for our CI-server code to also tak
 - Initialize maven pom (#9)
 
 ### Oscar Spolander
-- Task
-
+- Implement a code fetching function (#11)
+- Write Paragraph about our Team in the Essence standard. (#18)
 
 ## How to run the code
 
