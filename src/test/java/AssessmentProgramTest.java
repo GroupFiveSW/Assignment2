@@ -23,7 +23,7 @@ class AssessmentProgramTest {
     void multiplyNum(){
         int a = 2;
         int b = 3;
-        assertEquals(8, AssessmentProgram.multiplyNum(a,b), "multiplyNum returned wrong result");
+        assertEquals(9, AssessmentProgram.multiplyNum(a,b), "multiplyNum returned wrong result");
 
     }
 
