@@ -45,7 +45,10 @@ We've also implemented a seperate CI-workflow for our CI-server code to also tak
 - Task
 
 ### Gustaf Halvardsson
-- Task
+- Add a thorough README to repository (#23)
+- Create example program + tests to test CI-server workflow with (#17)
+- CI-Server Setup (#2)
+- Add Template Code (#1)
 
 ### Alexander Krantz
 - Task
