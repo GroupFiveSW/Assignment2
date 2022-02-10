@@ -4,6 +4,7 @@ public class BuildHistoryResult {
     private Date date;
     private String log;
     private String commit;
+    private String commitMessage;
     private Integer id;
 
     /**
@@ -13,10 +14,11 @@ public class BuildHistoryResult {
      * @param commit Commit id
      * @param id    Build id
      */
-    public BuildHistoryResult(Date date, String log, String commit, Integer id) {
+    public BuildHistoryResult(Date date, String log, String commit, String commitMessage, Integer id) {
         this.date = date;
         this.log = log;
         this.commit = commit;
+        this.commitMessage = commitMessage;
         this.id = id;
     }
 
@@ -50,5 +52,13 @@ public class BuildHistoryResult {
      */
     public Integer getId() {
         return id;
+    }
+
+    /**
+     * Gets commit message
+     * @return Commit message
+     */
+    public String getCommitMessage() {
+        return commitMessage;
     }
 }

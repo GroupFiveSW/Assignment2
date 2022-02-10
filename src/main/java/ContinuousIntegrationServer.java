@@ -96,8 +96,9 @@ public class ContinuousIntegrationServer
             System.out.println("Sent email to " + recipientEmail);
 
             String commitId = json.getJSONObject("head_commit").getString("id");
+            String commitMessage = json.getJSONObject("head_commit").getString("message");
             BuildHistory build = new BuildHistory();
-            build.addBuild(result, commitId);
+            build.addBuild(result, commitId, commitMessage);
 
 
 
@@ -165,8 +166,12 @@ public class ContinuousIntegrationServer
         String url = "/build";
 
         for (BuildHistoryResult build: builds) {
-            response += "<li>" +
-                            "<a href=\"" + url + "/" + build.getId() + "\">" + "build-" + build.getId() + "</a>" +
+            response += "<li style=\"margin-bottom:8px;\">" +
+                            "<a href=\"" + url + "/" + build.getId() + "\">" + build.getCommitMessage()+ "</a>" +
+                            "<div style=\"display:flex;padding-top:6px;\">" +
+                                "<h5 style=\"margin:0px 0px;\">Commit id: " + build.getCommit() +"</h5>"+
+                                "<h5 style=\"margin:0px 0px;margin-left:20px;\">Date: " + build.getDate() + "</h5>"+
+                            "</div>"+
                         "</li>";
         }
 

@@ -10,18 +10,20 @@ public class BuildHistory {
      * @param result TestResult object
      * @param commit Commit id
      */
-    public void addBuild (TestResult result, String commit) {
+    public void addBuild (TestResult result, String commit, String commitMessage) {
         try (Connection conn = DBConnection.createDbConnection()) {
             Date date = new Date();
             String query = "INSERT INTO builds ("
                     + " commit_id,"
                     + " build_date,"
+                    + "commit_message,"
                     + " build_log ) VALUES ("
-                    + "?, ?, ?)";
+                    + "?, ?, ?, ?)";
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, commit);
-            st.setDate(2, new java.sql.Date(date.getTime()));
-            st.setString(3, result.getLog());
+            st.setTimestamp(2, new java.sql.Timestamp(date.getTime()));
+            st.setString(3, commitMessage);
+            st.setString(4, result.getLog());
             st.executeUpdate();
             st.close();
             System.out.println("Successfully added build log");
@@ -36,16 +38,17 @@ public class BuildHistory {
      */
     public ArrayList<BuildHistoryResult> getAllBuilds() {
         try (Connection conn = DBConnection.createDbConnection()) {
-            String query = "SELECT * FROM builds";
+            String query = "SELECT * FROM builds ORDER BY build_date DESC";
             Statement st = conn.createStatement();
             ResultSet results = st.executeQuery(query);
             ArrayList<BuildHistoryResult> builds = new ArrayList<BuildHistoryResult>();
 
             while (results.next()) {
                 BuildHistoryResult bh = new BuildHistoryResult(
-                        results.getDate("build_date"),
+                        results.getTimestamp("build_date"),
                         results.getString("build_log"),
                         results.getString("commit_id"),
+                        results.getString("commit_message"),
                         results.getInt("id")
                 );
                 builds.add(bh);
@@ -70,9 +73,10 @@ public class BuildHistory {
             ResultSet results = st.executeQuery();
             while(results.next()) {
                 BuildHistoryResult bh = new BuildHistoryResult(
-                        results.getDate("build_date"),
+                        results.getTimestamp("build_date"),
                         results.getString("build_log"),
                         results.getString("commit_id"),
+                        results.getString("commit_message"),
                         results.getInt("id")
                 );
                 return bh;
