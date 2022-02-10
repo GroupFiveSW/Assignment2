@@ -80,6 +80,9 @@ public class ContinuousIntegrationServer
             String cloneUrl = json.getJSONObject("repository").getString("clone_url");
 
             System.out.println("Cloning repo...");
+
+
+
             process =  run.exec("git clone -b " +  branch + " " + cloneUrl +  " repo/");
             process.waitFor();
 
@@ -113,6 +116,8 @@ public class ContinuousIntegrationServer
             OutputStream output = exchange.getResponseBody();
             output.write(responseText.getBytes(StandardCharsets.UTF_8));
             output.close();
+            process =  run.exec("rm -rf repo/");
+            process.waitFor();
         } catch (Exception e){
             e.printStackTrace();
             System.out.println("Process failed");
