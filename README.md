@@ -14,6 +14,7 @@ We've also implemented a seperate CI-workflow for our CI-server code to also tak
 - **POST**, `/ci` : Endpoint that accepts GitHub payload from webhook, where the payload needs to contain reference to `branch`and `clone_url`. 
 - **GET**, `/` : Startpage for endpoint that only provides a informative tex and no other functionality.
 - **GET**, `/buildHistory` : Provides a HTML-page of the build-history of this repository and information and URL for each respective commit.
+- **GET**, `/build/{id}` : Provides a HTML-page for a specific build where the specific id can be found in the buildHistory endpoint. 
 
 ### Tooling
 
@@ -55,13 +56,4 @@ We've also implemented a seperate CI-workflow for our CI-server code to also tak
 
 ## How to run the code
 
-Thanks to the configuration of the `pom.xml` file, you can run, build and test the code in the most easy manner with your integrated IDE (like Intellij for ex.). 
-
-In order to test the project, run `mvn exec:java`
-
-In order for the maven compile and test functionalities to function correctly, one of the following actions must be taken. 
-1. Set the `JAVA_HOME` environment variable to the location of a JDK.
-2. Set the `MAVENINTGR_JAVAHOME` environment variable to the location of a JDK.
-3. Copy the `user.properties.template` to `user.properties`and set the `mavenintgr.java_home` property to the location of a JDK
-
-
+Since we are using docker you need to build the image first using `docker build -t assessment2 . ` when in the root folder of the project. Once it has finsihed building run the container using `docker run -p 8081:8081 -t assessment2`. Then the server will run the server.
