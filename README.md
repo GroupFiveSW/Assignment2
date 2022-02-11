@@ -70,3 +70,4 @@ We've also implemented a seperate CI-workflow for our CI-server code to also tak
 Since we are using docker you need to build the image first using `docker build -t assessment2 . ` when in the root folder of the project. Once it has finsihed building run the container using `docker run -p 8081:8081 -t assessment2`. Then the server will run the server.
 
 You can use `mvn javadoc:javadoc` in order to generate the source documentation.
+text
