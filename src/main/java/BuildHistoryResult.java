@@ -1,5 +1,9 @@
 import java.util.Date;
 
+/**
+ * Structure class for the resulting build-history list and individual items
+ */
+
 public class BuildHistoryResult {
     private Date date;
     private String log;

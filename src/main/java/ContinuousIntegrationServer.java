@@ -50,6 +50,9 @@ public class ContinuousIntegrationServer
         }
         return jsonObject;
     }
+    /**
+     * Handle-function for the /ci endpoint which runs the main routine for building and testing
+     */
 
     public static void handle(HttpExchange exchange)
             throws IOException
@@ -130,6 +133,10 @@ public class ContinuousIntegrationServer
 
     }
 
+    /**
+     * Handle-function for the / endpoint which runs a simple debugging message for feedback to the user.
+     */
+
 
     public static void handle2(HttpExchange exchange)
             throws IOException
@@ -139,11 +146,6 @@ public class ContinuousIntegrationServer
 
 
         System.out.println(exchange.getRequestURI());
-
-        // here you do all the continuous integration tasks
-        // for example
-        // 1st clone your repository
-        // 2nd compile the code
 
         String responseText = "CI job done 2";
         exchange.sendResponseHeaders(200, responseText.length());
@@ -237,9 +239,11 @@ public class ContinuousIntegrationServer
 
 
 
-
+    /**
+     *  Used to boot-up the CI server on the machine
+     */
  
-    // used to start the CI server in command line
+
     public static void main(String[] args) throws Exception
     {
         int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8081"));

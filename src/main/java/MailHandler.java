@@ -2,6 +2,9 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+/**
+ * Establishes a notification system to notify user via email about build results.
+ */
 public class MailHandler {
     SMTPSettings settings;
 
@@ -22,7 +25,6 @@ public class MailHandler {
     /**
      * Sends mail with the results of tests and compilation.
      * @param testResult Results from tests.
-     * @TODO Add support for compileResults.
      */
     public void mail(TestResult testResult){
         Session session = Session.getInstance(prop,

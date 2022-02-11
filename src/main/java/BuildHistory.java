@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.sql.ResultSet;
 
+/**
+ * Handles the requirement of showing a list of previous commit, with accompanying functions
+ */
 public class BuildHistory {
 
     /**

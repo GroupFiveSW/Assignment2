@@ -3,6 +3,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Establishes connection to MySQL database at Heroku
+ */
 public class DBConnection {
     private static String host = "jdbc:mysql://us-cdbr-east-05.cleardb.net:3306/heroku_3584e8d8c21353f";
     private static String username = "b516f4dfafb243";
